@@ -14,7 +14,7 @@ resource "aws_spot_instance_request" "SPOT" {
   wait_for_fulfillment = true
   }
 
-source "aws_ec2_tag" "name" {
+resource "aws_ec2_tag" "name" {
   count = length(local.ALL_INSTANCE_ID)
   resource_id = element(local.ALL_INSTANCE_ID, count.index)
   key = "Name"
