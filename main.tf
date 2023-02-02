@@ -18,7 +18,7 @@ resource "aws_spot_instance_request" "SPOT" {
 }
 locals {
   SPOT_INSTANCE_ID =aws_spot_instance_request.SPOT.*.spot_instance_id
-  ONDEMAND_INSTANE_ID = aws_instance.ondemand.id
+  ONDEMAND_INSTANE_ID = aws_instance.ondemand.*.id
   ALL_INSTANCE_ID = concat(local.SPOT_INSTANCE_ID, local.ONDEMAND_INSTANE_ID)
 }
 resource "aws_ec2_tag" "name" {
