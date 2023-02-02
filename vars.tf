@@ -1,3 +1,3 @@
-variable "component" {}
-variable "env" {}
+variable "COMPONENT" {}
+variable "ENV" {}
 variable "instances" {}
