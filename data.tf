@@ -26,7 +26,7 @@ data "aws_ami" "ami" {
 
 data "terraform_remote_state" "infra" {
   backend = "s3"
-   config {
+   config = {
      bucket = "dev-terraform-s3-statefile"
      key    = "mutable/infra/${var.ENV}/${var.ENV}-terraform.tfstate"
      region = "us-east-1"
