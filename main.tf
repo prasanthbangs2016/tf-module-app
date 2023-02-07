@@ -27,21 +27,21 @@ resource "aws_ec2_tag" "name" {
 
 }
 
-#resource "null_resource" "ansible_apply" {
-#  depends_on = [aws_instance.ondemand, aws_spot_instance_request.SPOT]
-#  count = length(local.ALL_PRIVATE_IP)
-#  provisioner "remote-exec" {
-#    connection {
-#      host = element(local.ALL_PRIVATE_IP, count.index)
-#      user = local.ssh_username
-#      password = local.ssh_password
-#    }
-#    inline = [
-#      "ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}  &>/tmp/cart.log"
-#       "ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}"
-#    ]
-#  }
-#}
+resource "null_resource" "ansible_apply" {
+  depends_on = [aws_instance.ondemand, aws_spot_instance_request.SPOT]
+  count = length(local.ALL_PRIVATE_IP)
+  provisioner "remote-exec" {
+    connection {
+      host = element(local.ALL_PRIVATE_IP, count.index)
+      user = local.ssh_username
+      password = local.ssh_password
+    }
+    inline = [
+      //"ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}  &>/tmp/cart.log"
+       "ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}"
+    ]
+  }
+}
 
 resource "aws_security_group" "main" {
   name        = "roboshop-${var.ENV}-${var.COMPONENT}"
