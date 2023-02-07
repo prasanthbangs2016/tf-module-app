@@ -14,6 +14,9 @@ resource "aws_spot_instance_request" "SPOT" {
   subnet_id = data.terraform_remote_state.infra.outputs.app_subnets[count.index]
   vpc_security_group_ids = [aws_security_group.main.id]
   wait_for_fulfillment = true
+  tags = {
+    Name = "rabbimq-${var.ENV}"
+  }
   }
 
 resource "aws_ec2_tag" "name" {
@@ -24,20 +27,20 @@ resource "aws_ec2_tag" "name" {
 
 }
 
-resource "null_resource" "ansible_apply" {
-  depends_on = [aws_instance.ondemand, aws_spot_instance_request.SPOT]
-  count = length(local.ALL_PRIVATE_IP)
-  provisioner "remote-exec" {
-    connection {
-      host = element(local.ALL_PRIVATE_IP, count.index)
-      user = local.ssh_username
-      password = local.ssh_password
-    }
-    inline = [
-      "ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}  &>/tmp/cart.log"
-    ]
-  }
-}
+#resource "null_resource" "ansible_apply" {
+#  depends_on = [aws_instance.ondemand, aws_spot_instance_request.SPOT]
+#  count = length(local.ALL_PRIVATE_IP)
+#  provisioner "remote-exec" {
+#    connection {
+#      host = element(local.ALL_PRIVATE_IP, count.index)
+#      user = local.ssh_username
+#      password = local.ssh_password
+#    }
+#    inline = [
+#      "ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}  &>/tmp/cart.log"
+#    ]
+#  }
+#}
 
 resource "aws_security_group" "main" {
   name        = "roboshop-${var.ENV}-${var.COMPONENT}"
