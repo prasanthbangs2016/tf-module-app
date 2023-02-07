@@ -13,6 +13,7 @@ resource "aws_spot_instance_request" "SPOT" {
   ami = data.aws_ami.ami.image_id
   subnet_id = data.terraform_remote_state.infra.outputs.app_subnets[count.index]
   vpc_security_group_ids = [aws_security_group.main.id]
+  iam_instance_profile = aws_iam_instance_profile.parameter-store-access.name
   wait_for_fulfillment = true
   tags = {
     Name = "rabbimq-${var.ENV}"
