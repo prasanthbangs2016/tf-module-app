@@ -38,6 +38,7 @@ resource "aws_ec2_tag" "name" {
 #    }
 #    inline = [
 #      "ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}  &>/tmp/cart.log"
+#       "ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}"
 #    ]
 #  }
 #}
