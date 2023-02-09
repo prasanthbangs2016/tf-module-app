@@ -3,6 +3,6 @@ resource "aws_lb_target_group_attachment" "frontend" {
   #and, as statefile will have info so will reference from it
   count = length(local.ALL_INSTANCE_ID)
   target_group_arn = data.terraform_remote_state.infra.outputs.public_tg_arn
-  target_id        = local.ALL_INSTANCE_ID
+  target_id        = local.ALL_INSTANCE_ID[count.index]
   port             = 80
 }
