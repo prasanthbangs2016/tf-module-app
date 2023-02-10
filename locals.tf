@@ -11,6 +11,6 @@ locals {
   SPOT_PRIVATE_IP = aws_spot_instance_request.SPOT.*.private_ip
   //ONDEMAND_PRIVATE_IP = aws_instance.ondemand.*.private_ip
   //ALL_PRIVATE_IP = concat(local.SPOT_PRIVATE_IP,local.ONDEMAND_PRIVATE_IP)
-  ALL_PRIVATE_IP = concat(local.SPOT_PRIVATE_IP,local)
+  ALL_PRIVATE_IP = concat(local.SPOT_PRIVATE_IP)
 
 }
