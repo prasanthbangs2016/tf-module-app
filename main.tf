@@ -29,7 +29,8 @@ resource "aws_ec2_tag" "name" {
 }
 
 resource "null_resource" "ansible_apply" {
-  depends_on = [aws_instance.ondemand, aws_spot_instance_request.SPOT]
+  //depends_on = [aws_instance.ondemand, aws_spot_instance_request.SPOT]
+  depends_on = aws_spot_instance_request.SPOT
   count = length(local.ALL_PRIVATE_IP)
   provisioner "remote-exec" {
     connection {
