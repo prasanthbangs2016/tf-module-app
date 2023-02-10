@@ -23,7 +23,7 @@ resource "aws_lb_target_group" "public" {
     interval = 5
     timeout = 4
     port = var.APP_PORT
-    unhealthy_threshold = true
+    unhealthy_threshold = 2
 
   }
 }
