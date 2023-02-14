@@ -1,4 +1,4 @@
-resource "aws_lb_target_group_attachment" "frontend" {
+resource "aws_lb_target_group_attachment" "tg" {
   #as i want target group arn so export info into outputs from alb module and that referenced in infra module
   #and, as statefile will have info so will reference from it
   #target group should attach only when it is frontend
@@ -9,7 +9,7 @@ resource "aws_lb_target_group_attachment" "frontend" {
   port             = var.APP_PORT
 }
 
-resource "aws_lb_target_group" "public" {
+resource "aws_lb_target_group" "tg" {
   name     = "${var.COMPONENT}-${var.ENV}-tg"
   # target group backend is opened with 80port hence the same"
   port     = var.APP_PORT
@@ -24,6 +24,7 @@ resource "aws_lb_target_group" "public" {
     timeout = 4
     port = var.APP_PORT
     unhealthy_threshold = 2
+    path = "/health"
 
   }
 }
