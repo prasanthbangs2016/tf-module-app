@@ -4,7 +4,7 @@ resource "aws_lb_target_group_attachment" "tg" {
   #target group should attach only when it is frontend
   #hence the condition tgt group arn = frontend else target group arn
   count = length(local.ALL_INSTANCE_ID)
-  target_group_arn = var.COMPONENT == "frontend" ? data.terraform_remote_state.infra.outputs.public_tg_arn : aws_lb_target_group.public.arn
+  target_group_arn = var.COMPONENT == "frontend" ? data.terraform_remote_state.infra.outputs.public_tg_arn : aws_lb_target_group.tg.arn
   target_id        = local.ALL_INSTANCE_ID[count.index]
   port             = var.APP_PORT
 }
