@@ -16,7 +16,6 @@ resource "aws_lb_target_group" "tg" {
   protocol = "HTTP"
   vpc_id   = data.terraform_remote_state.infra.outputs.vpc_id
   deregistration_delay = 0
-
   health_check {
     enabled = true
     healthy_threshold = 2
@@ -27,4 +26,21 @@ resource "aws_lb_target_group" "tg" {
     path = "/health"
 
   }
+}
+
+resource "aws_lb_listener_rule" "name-based-rule" {
+  listener_arn = data.terraform_remote_state.infra.outputs.private_lb_listener_arn
+  priority     = 100
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.tg.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["${var.COMPONENT}-${var.ENV}.roboshop.internal"]
+    }
+  }
+
 }

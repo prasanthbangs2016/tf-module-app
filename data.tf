@@ -33,3 +33,8 @@ data "terraform_remote_state" "infra" {
 
      }
 }
+
+data "aws_route53_zone" "private" {
+  name         = "roboshop.internal"
+  private_zone = true
+}
