@@ -10,7 +10,7 @@ resource "aws_lb_target_group_attachment" "tg" {
 }
 
 resource "aws_lb_target_group" "tg" {
-  name     = "${var.COMPONENT}-${var.ENV}-tg"
+  name     = "${var.COMPONENT}-${var.ENV}"
   # target group backend is opened with 80port hence the same"
   port     = var.APP_PORT
   protocol = "HTTP"
