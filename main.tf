@@ -79,6 +79,6 @@ resource "aws_security_group" "main" {
 
 
   tags = {
-    Name = "Roboshop-${var.ENV}-cart"
+    Name = "Roboshop-${var.ENV}"
   }
 }
