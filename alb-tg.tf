@@ -4,12 +4,14 @@ resource "aws_lb_target_group_attachment" "tg" {
   #target group should attach only when it is frontend
   #hence the condition tgt group arn = frontend else target group arn
   count = length(local.ALL_INSTANCE_ID)
-  target_group_arn = var.COMPONENT == "frontend" ? data.terraform_remote_state.infra.outputs.public_tg_arn : aws_lb_target_group.tg.arn
+  target_group_arn = var.COMPONENT == "frontend" ? data.terraform_remote_state.infra.outputs.public_tg_arn : aws_lb_target_group.tg[0].arn
   target_id        = local.ALL_INSTANCE_ID[count.index]
   port             = var.APP_PORT
 }
 
 resource "aws_lb_target_group" "tg" {
+  #create if not == frontend
+  count = var.COMPONENT == "frontend" ? 0 : 1
   name     = "${var.COMPONENT}-${var.ENV}"
   # target group backend is opened with 80port hence the same"
   port     = var.APP_PORT
@@ -29,12 +31,14 @@ resource "aws_lb_target_group" "tg" {
 }
 
 resource "aws_lb_listener_rule" "name-based-rule" {
+  #create if not == frontend
+  count = var.COMPONENT == "frontend" ? 0 : 1
   listener_arn = data.terraform_remote_state.infra.outputs.private_lb_listener_arn
   priority     = 100
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.tg.arn
+    target_group_arn = aws_lb_target_group.tg[0].arn
   }
 
   condition {
