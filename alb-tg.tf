@@ -34,7 +34,7 @@ resource "aws_lb_listener_rule" "name-based-rule" {
   #create if not == frontend
   count = var.COMPONENT == "frontend" ? 0 : 1
   listener_arn = data.terraform_remote_state.infra.outputs.private_lb_listener_arn
-  priority     = 100
+  priority     = var.LB_RULE_PRIORITY
 
   action {
     type             = "forward"
