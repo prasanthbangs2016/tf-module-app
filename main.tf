@@ -29,7 +29,12 @@ resource "aws_ec2_tag" "name" {
 }
 
 resource "null_resource" "ansible_apply" {
+  triggers = {
+    instances = join(",", local.ALL_INSTANCE_ID)
+    abc       = timestamp()
+  }
   //depends_on = [aws_instance.ondemand, aws_spot_instance_request.SPOT]
+
   depends_on = [aws_spot_instance_request.SPOT]
   count = length(local.ALL_PRIVATE_IP)
   provisioner "remote-exec" {
@@ -39,7 +44,7 @@ resource "null_resource" "ansible_apply" {
       password = local.ssh_password
     }
     inline = [
-       #"ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}"
+       "ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}"
     ]
   }
 }
