@@ -39,7 +39,7 @@ resource "null_resource" "ansible_apply" {
       password = local.ssh_password
     }
     inline = [
-       "ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}"
+       //"ansible-pull -i localhost, -U https://github.com/prasanthbangs2016/roboshop-mutable-ansible--v2 roboshop.yml -e HOSTS=localhost -e APP_COMPONENT_ROLE=${var.COMPONENT} -e ENV=${var.ENV}"
     ]
   }
 }
