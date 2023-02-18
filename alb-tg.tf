@@ -10,7 +10,7 @@ resource "aws_lb_target_group_attachment" "tg" {
 }
 
 resource "aws_lb_target_group" "tg" {
-  #create if not == frontend
+  #create tg if not == frontend
   count = var.COMPONENT == "frontend" ? 0 : 1
   name     = "${var.COMPONENT}-${var.ENV}"
   # target group backend is opened with 80port hence the same"
@@ -25,11 +25,14 @@ resource "aws_lb_target_group" "tg" {
     timeout = 4
     port = var.APP_PORT
     unhealthy_threshold = 2
+    #/health is available for the services
+    #curl - L
     path = "/health"
 
   }
 }
 
+#private lb listener rule for backend services routing
 resource "aws_lb_listener_rule" "name-based-rule" {
   #create if not == frontend
   count = var.COMPONENT == "frontend" ? 0 : 1
@@ -42,7 +45,7 @@ resource "aws_lb_listener_rule" "name-based-rule" {
   }
 
   condition {
-    path_pattern {
+    host_header {
       values = ["${var.COMPONENT}-${var.ENV}.roboshop.internal"]
     }
   }

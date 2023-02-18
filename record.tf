@@ -1,3 +1,4 @@
+#creatin all backend services dns records in route53
 resource "aws_route53_record" "private" {
   zone_id = data.aws_route53_zone.private.id
   name    = "${var.COMPONENT}-${var.ENV}.roboshop.internal"
